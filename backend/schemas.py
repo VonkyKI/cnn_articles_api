@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 from typing import Optional
 from datetime import datetime
 
@@ -44,3 +44,10 @@ class EventSchema(BaseModel):
     description: Optional[str]
     class Config:
         orm_mode = True
+
+
+class ArticleCreateSchema(BaseModel):
+    title: str
+    url: HttpUrl
+    article_date: datetime
+    fk_topic_id: int
