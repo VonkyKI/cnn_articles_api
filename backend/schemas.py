@@ -31,6 +31,7 @@ class OpinionSchema(BaseModel):
     sentiment_score: Optional[float]
     relevancy_score: Optional[float]
     citation: Optional[str]
+    created_at: Optional[datetime]
     class Config:
         orm_mode = True
 
