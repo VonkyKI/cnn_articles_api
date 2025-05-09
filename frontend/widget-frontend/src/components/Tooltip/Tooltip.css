@@ -1,0 +1,14 @@
+.Tooltip {
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    pointer-events: none;
+    font-size: 10px;
+    min-width: 100px;
+    max-width: 200px;
+  }
+  

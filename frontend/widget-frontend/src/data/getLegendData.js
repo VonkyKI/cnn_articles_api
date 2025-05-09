@@ -1,6 +1,5 @@
 // src/data/getChartData.js
-export const getChartData = async () => {
-  
+export const getLegendData = async () => {
   try {
     const [opinionsRes, personsRes, articlesRes] = await Promise.all([
       fetch("https://cnnarticlesapi-production.up.railway.app/opinions"),
@@ -32,14 +31,22 @@ export const getChartData = async () => {
           : "Unknown",
       };
     });
-    
 
-    return {
-      eventsData: Object.values(merged).flat().slice(1, 50),
-    };
+    // Групування даних по персоні
+    const groupedByPerson = merged.reduce((acc, item) => {
+      const personName = item.person_name;
+      if (!acc[personName]) {
+        acc[personName] = [];
+      }
+      acc[personName].push(item);
+      return acc;
+    }, {});
+
+
+    
+    return {events: Object.values(groupedByPerson).flat().slice(1, 50)}; // Повертаємо згруповані дані
   } catch (error) {
-    console.error("Error in getChartData:", error);
-    return { eventsData: [] }; // Повертаємо порожні дані у разі помилки
+    console.error("Error in getLegendData:", error);
+    return {}; // Повертаємо порожній об'єкт у разі помилки
   }
 };
-

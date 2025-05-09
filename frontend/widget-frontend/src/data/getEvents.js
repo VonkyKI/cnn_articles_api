@@ -1,0 +1,40 @@
+export const getEvents = async () => {
+  try {
+    // Крок 1: Отримуємо список статей
+    const articlesResponse = await fetch('https://cnnarticlesapi-production.up.railway.app/articles/');
+    if (!articlesResponse.ok) {
+      throw new Error(`Failed to fetch articles: ${articlesResponse.statusText}`);
+    }
+
+    const articles = await articlesResponse.json();
+
+    // Крок 2: Отримуємо список подій
+    const eventsResponse = await fetch('https://cnnarticlesapi-production.up.railway.app/events/');
+    if (!eventsResponse.ok) {
+      throw new Error(`Failed to fetch events: ${eventsResponse.statusText}`);
+    }
+
+    const events = await eventsResponse.json();
+
+    // Крок 3: Зв'язуємо події зі статтями за `article_id` та `fk_article_id`
+    const eventsWithArticles = events.map(event => {
+      const relatedArticle = articles.find(article => article.article_id === event.fk_origin_article_id);
+      return {
+        id: event.event_id,
+        title: event.event_title,
+        description: event.description,
+        relevanceScore: event.relevance_score,
+        date: relatedArticle.article_date, // Дата події
+        url: relatedArticle.url, // URL статті
+        article: relatedArticle ? relatedArticle.title : 'Unknown Article', // Додаємо назву статті
+      };
+    }).slice(0, 10); // Обмежуємо до 10 подій
+
+    
+
+    return eventsWithArticles;
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    return [];
+  }
+};
