@@ -20,24 +20,29 @@ export const getChartData = async () => {
     political_party: person?.political_party || "Unknown",
     article_title: article?.title || "Unknown",
     article_url: article?.url || "#",
-    article_date: article?.article_date || "Unknown",
+    article_date: article?.article_date && !isNaN(new Date(article.article_date).getTime())
+    ? new Date(article.article_date).toISOString().split("T")[0]
+    : "Unknown",
     };
   });
   
   const grouped = {};
   const legendInfo = {};
   
-  console.log(merged);
-  
 
   merged.forEach(item => {
     const name = item.person_name;
     if (!grouped[name]) grouped[name] = [];
     grouped[name].push({
-      x: new Date(item.article_date),
+      x: new Date(item.article_date).toISOString().split("T")[0],
       y: item.sentiment_score,
       r: Math.min(Math.max(item.citation.length / 10, 5), 20),
-      tooltip: `${item.person_name}: "${item.citation}" (Article: "${item.article_title}")`,
+      tooltip: {
+        person: item.person_name,
+        quote: item.citation,
+        title: item.article_title,
+        url: item.article_url
+      }
     });
 
     if (!legendInfo[name]) {
@@ -50,14 +55,28 @@ export const getChartData = async () => {
       };
     }
   });
+
+  const generalEvents = [
+    {
+      date: "2024-10-09",
+      title: "Florida's six-week abortion law effective",
+      description: "Aiming to make Florida a leader in pro-life legislation."
+    },
+    {
+      date: "2024-04-12",
+      title: "Arizona Senate votes to repeal 1864 ban",
+      description: "Requested additional time for implementation."
+    }
+  ];
   
-  return { groupedData: grouped, legendData: Object.values(legendInfo) };
+
+  return { groupedData: grouped, legendData: Object.values(legendInfo), generalEvents: generalEvents };
   };
   
   const getRandomColor = () => {
     const r = Math.floor(Math.random() * 255);
     const g = Math.floor(Math.random() * 255);
     const b = Math.floor(Math.random() * 255);
-    return `rgba(${r},${g},${b},0.8)`;
+    return `rgba(${r},${g},${b},0.6)`;
   };
   
