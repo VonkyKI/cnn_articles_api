@@ -2,16 +2,19 @@ import * as d3 from 'd3'; // Import D3 library
 
 // Function to calculate the radius size based on "Overall influence"
 export const getRadiusBasedOnInfluence = (influence) => {
-    switch (influence) {
-      case "high":
-        return 25;
-      case "medium":
-        return 15;
-      case "low":
-        return 8;
-      default: 
+  
+    console.log(influence);
+    
+
+    if (influence >= 0.7) {
+      return 25;
+    } else if (influence >= 0.4) {
       return 15;
-  }
+    } else if (influence >= 0) {
+      return 8;
+    } else {
+      return 15;
+    }
 };
 
 

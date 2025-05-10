@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routes import article, opinion, person, topic, events
+from backend.routes import article, opinion, person, topic, events, attitude
 
 app = FastAPI()
 
@@ -21,3 +21,4 @@ app.include_router(opinion.router, prefix="/opinions", tags=["Opinions"])
 app.include_router(person.router, prefix="/persons", tags=["Persons"])
 app.include_router(topic.router, prefix="/topics", tags=["Topics"])
 app.include_router(events.router, prefix="/events", tags=["Events"])
+app.include_router(attitude.router, prefix="/attitude", tags=["Attitude"])

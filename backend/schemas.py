@@ -49,7 +49,22 @@ class EventSchema(BaseModel):
     class Config:
         orm_mode = True
 
+class FctAttitudeSchema(BaseModel):
+    fk_topic_id: int
+    fk_person_id: int
+    created_at: Optional[datetime.datetime]
+    modified_at: Optional[datetime.datetime]
+    sentiment_deviation: Optional[float]
+    stance: Optional[str]
+    person_summary: Optional[str]
+    is_expert_flag: Optional[bool]
 
+    class Config:
+        orm_mode = True
+
+
+
+#---------------------------------------------------------------------------
 class ArticleCreateSchema(BaseModel):
     title: str
     url: HttpUrl

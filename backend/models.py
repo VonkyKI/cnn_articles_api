@@ -65,3 +65,16 @@ class dimEvents(Base):
     novelty_score = Column(Float)
     event_hotness = Column(Float)
     is_selected = Column(Boolean)
+
+
+class FctAttitude(Base):
+    __tablename__ = "fctAttitude"
+
+    fk_topic_id = Column(Integer, primary_key=True, nullable=False)
+    fk_person_id = Column(Integer, primary_key=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    modified_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    sentiment_deviation = Column(Float)
+    stance = Column(String(30))
+    person_summary = Column(String(300))
+    is_expert_flag = Column(Boolean)

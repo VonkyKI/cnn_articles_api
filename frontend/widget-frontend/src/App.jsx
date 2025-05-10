@@ -59,10 +59,12 @@ function BubbleChart() {
   
   // Function to prepare force simulation for clustering bubbles
   const createForceSimulation = (nodes, xScale, getRadiusBasedOnInfluence) => {
+    console.log("nodes", nodes);
+    
     const simulation = d3.forceSimulation(nodes)
       .force("x", d3.forceX(d => xScale(d.dateIndex)).strength(0.8))
       .force("y", d3.forceY(d => yScale(d.sentiment_score)).strength(1))
-      .force("collision", d3.forceCollide(d => getRadiusBasedOnInfluence() + 2))
+      .force("collision", d3.forceCollide(d => getRadiusBasedOnInfluence(d.opinion_hotness) + 2))
       .tick(300)
       .stop();
 
@@ -182,33 +184,39 @@ function BubbleChart() {
                   opacity={bubbleOpacities[index]}
                 >
                 {/* Pulsing effect if inconsistency is TRUE */}
-                {event.inconsistencies === true && (
+                {event.inconsistency_flag === 1 && (
                   <>
                   <circle
                     className="pulsing"
                     cx={event.x}
                     cy={event.y}
-                    r={getRadiusBasedOnInfluence(event["Overall influence"])}
-                    fill="deepskyblue"
-                    opacity={0.5}
-                    style={{ transformOrigin: `${event.x}px ${event.y}px`, animationDelay: '0s'}}
-                  />
-                  <circle
-                    className="pulsing"
-                    cx={event.x}
-                    cy={event.y}
-                    r={getRadiusBasedOnInfluence(event["Overall influence"])}
+                    r={getRadiusBasedOnInfluence(event.opinion_hotness)}
                     fill="orange"
                     opacity={0.5}
                     style={{ transformOrigin: `${event.x}px ${event.y}px`, animationDelay: '1s'}}
                   />
                   </>
                 )}
+                {nodes.filter((e) => e.inconsistency_with_id === event.opinion_id).length > 0 && (
+                <>
+                {<circle
+                  className="pulsing"
+                  cx={event.x}
+                  cy={event.y}
+                  r={getRadiusBasedOnInfluence(event.opinion_hotness)}
+                  fill="deepskyblue"
+                  opacity={0.5}
+                  style={{ transformOrigin: `${event.x}px ${event.y}px`, animationDelay: '0s'}}
+                /> }
+
+                </>
+                
+                )}
                 {/* Normal bubble */}
                 <circle
                   cx={event.x} // Bubble X position from force simulation
                   cy={event.y} // Set Y position from force simulation
-                  r={getRadiusBasedOnInfluence(event["Overall influence"])}
+                  r={getRadiusBasedOnInfluence(event.opinion_hotness)} // Set radius based on "Overall influence"
                   fill={hoveredEvent === null || event.person_name === hoveredEvent.person_name ? 'darkblue' : 'darkblue'} //#b7c9e2
                   opacity={1}
                   onMouseOver={() => {
