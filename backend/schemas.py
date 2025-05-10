@@ -52,8 +52,8 @@ class EventSchema(BaseModel):
 class FctAttitudeSchema(BaseModel):
     fk_topic_id: int
     fk_person_id: int
-    created_at: Optional[datetime.datetime]
-    modified_at: Optional[datetime.datetime]
+    created_at: Optional[datetime]
+    modified_at: Optional[datetime]
     sentiment_deviation: Optional[float]
     stance: Optional[str]
     person_summary: Optional[str]
