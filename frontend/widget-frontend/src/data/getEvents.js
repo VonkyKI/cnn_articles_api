@@ -1,7 +1,9 @@
+const API_URL = import.meta.env.VITE_APP_API_URL;
+
 export const getEvents = async () => {
   try {
     // Крок 1: Отримуємо список статей
-    const articlesResponse = await fetch('https://cnnarticlesapi-production.up.railway.app/articles/');
+    const articlesResponse = await fetch(`${API_URL}articles`);
     if (!articlesResponse.ok) {
       throw new Error(`Failed to fetch articles: ${articlesResponse.statusText}`);
     }
@@ -9,7 +11,7 @@ export const getEvents = async () => {
     const articles = await articlesResponse.json();
 
     // Крок 2: Отримуємо список подій
-    const eventsResponse = await fetch('https://cnnarticlesapi-production.up.railway.app/events/');
+    const eventsResponse = await fetch(`${API_URL}events/`);
     if (!eventsResponse.ok) {
       throw new Error(`Failed to fetch events: ${eventsResponse.statusText}`);
     }

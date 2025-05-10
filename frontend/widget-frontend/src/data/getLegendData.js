@@ -1,10 +1,12 @@
+const API_URL = import.meta.env.VITE_APP_API_URL;
+
 // src/data/getChartData.js
 export const getLegendData = async () => {
   try {
     const [opinionsRes, personsRes, articlesRes] = await Promise.all([
-      fetch("https://cnnarticlesapi-production.up.railway.app/opinions"),
-      fetch("https://cnnarticlesapi-production.up.railway.app/persons"),
-      fetch("https://cnnarticlesapi-production.up.railway.app/articles")
+      fetch(`${API_URL}opinions`),
+      fetch(`${API_URL}persons`),
+      fetch(`${API_URL}articles`)
     ]);
 
     if (!opinionsRes.ok || !personsRes.ok || !articlesRes.ok) {
