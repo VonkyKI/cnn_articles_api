@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { getEvents } from '../../data/getEvents';
 import * as d3 from "d3";
 
-function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap }) {
+function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap, innerWidth, selectedEventIndex }) {
   const [events, setEvents] = useState([]);
   const randomOffsetsRef = useRef([]);
 
@@ -22,6 +22,7 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap }) {
   }, [events]);
 
   const getClosestDates = (targetDate) => {
+    
     const dates = Object.keys(dateIndexMap)
       .map(date => new Date(date))
       .sort((a, b) => a - b);
@@ -47,9 +48,12 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap }) {
 
     let xDatePos = xScale(dateIndexMap[event.date]);
     if (xDatePos) {
-      const xBoxPos = index * (boxWidth + boxGap) + boxWidth / 2;
+      // const xBoxPos = index * (boxWidth + boxGap) + boxWidth / 2;
+
+      const xBoxPos =  (innerWidth / events.length) * index;
       startPos = { x: xDatePos, y: innerHeight + 30 };
       endPos = { x: xBoxPos, y: innerHeight + 50 };
+      
     } else {
       const [smallerDate, largerDate] = getClosestDates(event.date);
       if (smallerDate && largerDate) {
@@ -62,24 +66,33 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap }) {
 
         xDatePos = xScale(smallerIndex + normalizedPosition * (largerIndex - smallerIndex));
 
-        const xBoxPos = index * (boxWidth + boxGap) + boxWidth / 2;
+        // const xBoxPos = index * (boxWidth + boxGap) + boxWidth / 2;
+
+        const xBoxPos =  (((innerWidth + 70 + 50) / events.length) * (index)) + boxWidth - boxGap;
+        
         startPos = { x: xDatePos, y: innerHeight + 30 };
-        endPos = { x: xBoxPos, y: innerHeight + 50 };
+        endPos = { x: xBoxPos, y: innerHeight + 100 };
+        console.log(event.title, endPos);
+        
       } else {
-        return null;
+        return null;p.lineTo(endPos.x, startPos.y + 50 + randomOffset);
       }
     }
 
     const p = new d3.path();
     p.moveTo(startPos.x, startPos.y);
-    p.lineTo(startPos.x, startPos.y + 10 + randomOffset);
-    p.lineTo(endPos.x, startPos.y + 10 + randomOffset);
+    p.lineTo(startPos.x, startPos.y + 10 - randomOffset);
+    p.lineTo(endPos.x, startPos.y + 10 - randomOffset);
     p.lineTo(endPos.x, endPos.y);
+
+    console.log(selectedEventIndex);
+    
 
     return {
       pathString: p.toString(),
       startPos,
       endPos,
+      opacity: selectedEventIndex === null ? 0.7 : selectedEventIndex === index ? 1 : 0.1, // Логіка прозорості
     };
   });
 
@@ -93,7 +106,7 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap }) {
               d={line.pathString}
               stroke="black"
               fill="none"
-              opacity={0.8}
+              opacity={line.opacity} // Встановлюємо прозорість
               data-index={index}
             />
           );

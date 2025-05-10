@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_APP_API_URL;
 export const getLegendData = async () => {
   try {
     const [opinionsRes, personsRes, articlesRes] = await Promise.all([
-      fetch(`${API_URL}opinions`),
+      fetch(`${API_URL}opinions/?is_selected=1`),
       fetch(`${API_URL}persons`),
       fetch(`${API_URL}articles`)
     ]);

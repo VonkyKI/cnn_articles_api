@@ -16,6 +16,7 @@ import Legend from './components/Legend/BubbleLegend';
 
 function BubbleChart() {
   const [chartData, setChartData] = useState([]);
+  const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [hoveredEvent, setHoveredEvent] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null); // State to track the selected event
   const [filter, setFilter] = useState(null); // State to track the selected filter
@@ -111,6 +112,8 @@ function BubbleChart() {
 
   // Scroll to the selected bubble based on Persona widget selection
   useEffect(() => {
+
+    
     if (filter && svgRef.current) {
       const selectedBubble = nodes.find(event => event.name === filter);
       if (selectedBubble) {
@@ -152,7 +155,7 @@ function BubbleChart() {
             }
 
             // find event with event id from data-event-id attribute of the clicked element and set it as selected event
-            const event = nodes.find(d => d.fk_origin_article_id === Number(ev.target.dataset.eventId));
+            const event = nodes.find(d => d.opinion_id === Number(ev.target.dataset.eventId));
 
             
             if(event) {
@@ -217,8 +220,9 @@ function BubbleChart() {
                   onMouseOut={() => {
                     setHoveredEvent(null);
                   }}
+                  
                   className='bubble-main'
-                  data-event-id={event.fk_origin_article_id} // Add data attribute to identify the event
+                  data-event-id={event.opinion_id} // Add data attribute to identify the event
                   // onClick={() => {}} --> on click event is handled on the SVG element
                 >
                 </circle>
@@ -228,7 +232,13 @@ function BubbleChart() {
             </g>
           
             {/* Render connector lines between x axis and event boxes in timeline */}
-            <EventBoxConnectorLines xScale={xScale} dateIndexMap={dateIndexMap} innerHeight={innerHeight} />
+            <EventBoxConnectorLines
+              xScale={xScale}
+              innerHeight={innerHeight}
+              dateIndexMap={dateIndexMap}
+              innerWidth={innerWidth}
+              selectedEventIndex={selectedEventIndex} // Передаємо вибраний індекс
+            />
           </g>
         </svg>
         {/* Render tooltip when hovered or when a filter is applied */}
@@ -238,7 +248,16 @@ function BubbleChart() {
       </div>
 
       {/* Render the EventTimeline component */}
-      <EventTimeline width={width}/>
+      <EventTimeline
+        width={width}
+        onEventBoxClick={(index) => {
+          if (selectedEventIndex === index) {
+            setSelectedEventIndex(null);
+          } else {
+            setSelectedEventIndex(index);
+          }
+        }} // Оновлюємо вибраний індекс
+      />
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { getRadiusBasedOnInfluence } from "../../utils";
 import './Tooltip.css'; 
 
 function Tooltip({ hoveredEvent, margin}) {
+  console.log(hoveredEvent);
+  
   return (
     <div
       className="Tooltip"
@@ -27,8 +29,10 @@ function Tooltip({ hoveredEvent, margin}) {
       <br />
       <strong>Influence:</strong> {hoveredEvent["Overall influence"]}
       <br />
+      <strong>Citation:</strong> {hoveredEvent.citation}
+      <br />
       <em> {hoveredEvent["text"]}  </em> 
-      <a className="EventBox-readmore" href={hoveredEvent.url} target="_blank" rel="noopener noreferrer">Read more</a>
+      <a className="EventBox-readmore" href={hoveredEvent.article_url} target="_blank" rel="noopener noreferrer">Read more</a>
     </div>
   );
 }

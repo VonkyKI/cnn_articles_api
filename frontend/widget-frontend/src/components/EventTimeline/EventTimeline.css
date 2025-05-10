@@ -3,10 +3,11 @@
     flex-direction: row;
     column-gap: 20px;
     /* to move timeline on top of svg container */
-    margin-top: -100px;
+    margin-top: -50px;
     /* same as for svg margin left */
     margin-left: 70px;
     margin-bottom: 50px;
+    justify-content: space-around;
   }
   
   .EventBox {

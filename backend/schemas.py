@@ -33,6 +33,9 @@ class OpinionSchema(BaseModel):
     citation: Optional[str]
     created_at: Optional[datetime]
     is_selected: Optional[int]
+    inconsistency_flag: Optional[int]
+    inconsistency_with_id: Optional[int]
+    opinion_hotness: Optional[float]
     class Config:
         orm_mode = True
 

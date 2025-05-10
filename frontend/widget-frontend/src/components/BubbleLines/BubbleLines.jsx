@@ -3,8 +3,11 @@ import { getOpacityLines } from "../../utils";
 
 function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
 
+  
   // Function to calculate the control points for the Bezier curve for the lines connecting the bubbles and dashed lines
   function getBezierCurveControlPoints(start, end) {
+
+    
     const midX = (start.x + end.x) / 2;
     const distanceX = Math.abs(end.x - start.x);
     const factor = 0.01;
@@ -12,17 +15,19 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
     const cp1y = start.y;
     const cp2x = midX + (end.x > start.x ? 1 : 1) * distanceX * factor;
     const cp2y = end.y;
+
+    
     return { cp1x, cp1y, cp2x, cp2y };
   }
 
   // calculations for the lines connecting the bubbles
   const lineConnectionArray = [];
-  d3.group(chartData, (d) => d.person_name).forEach((group) => {
+  d3.group(chartData, (d) => d.fk_person_id).forEach((group) => {
     // sort the group by sentiment score and date
     const sortedGroup = group
       .sort((a, b) => a.sentiment_score - b.sentiment_score)
       .sort((a, b) => new Date(a.article_date) - new Date(b.article_date));
-
+    
     
     // loop over each event in the group
     sortedGroup.forEach((event, i) => {
@@ -38,6 +43,7 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
           prevEvent,
           event
         );
+        
         path.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, event.x, event.y);
 
         // Check if there is a dashed line between these two specific events
@@ -45,10 +51,10 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
         if (
           chartData.some(
             (e) =>
-              (e.event_id === event.event_id &&
-                e.inconsistency_id === prevEvent.event_id) ||
-              (e.event_id === prevEvent.event_id &&
-                e.inconsistency_id === event.event_id)
+              (e.fk_origin_article_id === event.fk_origin_article_id &&
+                e.inconsistency_id === prevEvent.fk_origin_article_id) ||
+              (e.fk_origin_article_id === prevEvent.fk_origin_article_id &&
+                e.inconsistency_id === event.fk_origin_article_id)
           )
         ) {
           hasDashedLine = true;
@@ -56,6 +62,7 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
 
         // calculate the opacity of the line based on the hovered event and selected event
         const opacityLine = getOpacityLines(event, hoveredEvent, selectedEvent, filter);
+        
 
         lineConnectionArray.push({ path, hasDashedLine, name: event.name, opacityLine });
       }
