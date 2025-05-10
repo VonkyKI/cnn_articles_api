@@ -77,6 +77,8 @@ const Persona = ({ onFilterChange, innerWidth, filter }) => {
   
 
   const handleWidgetClick = (name) => {
+
+    
     if (selectedWidget === name) {
       setSelectedWidget(null); // Deselect widget if already selected
       onFilterChange(null); // Clear the filter

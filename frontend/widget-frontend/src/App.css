@@ -17,3 +17,10 @@
   font-weight: bold;
   text-align: center;
 }
+.ScrollableContainer {
+  max-height: 600px; /* Встановіть максимальну висоту для контейнера */
+  overflow-x: auto; /* Дозволяє вертикальну прокрутку */
+  overflow-y: hidden; /* Забороняє горизонтальну прокрутку */
+  border: 1px solid #ddd; /* Опціонально: рамка для візуалізації */
+  padding: 10px; /* Відступи всередині контейнера */
+}

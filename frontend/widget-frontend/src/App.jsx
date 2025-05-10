@@ -45,7 +45,7 @@ function BubbleChart() {
 
 
   const innerWidth = width - margin.left - margin.right;
-  console.log("innerWidth", innerWidth);
+
   
   const innerHeight = height - margin.top - margin.bottom;
 
@@ -152,11 +152,13 @@ function BubbleChart() {
             }
 
             // find event with event id from data-event-id attribute of the clicked element and set it as selected event
-            const event = nodes.find(d => d.event_id === Number(ev.target.dataset.eventId));
+            const event = nodes.find(d => d.fk_origin_article_id === Number(ev.target.dataset.eventId));
+
+            
             if(event) {
               setSelectedEvent(event);
               setHoveredEvent(event); // also set hovered event to show tooltip immediately (otherwise it would only show on mouseout and mouseover again)
-              setFilter(null); // clear the filter or set it to the persona name setFilter(event.name)
+              setFilter(event.person_name); // clear the filter or set it to the persona name setFilter(event.name)
             }
           }}
         >
@@ -204,11 +206,11 @@ function BubbleChart() {
                   cx={event.x} // Bubble X position from force simulation
                   cy={event.y} // Set Y position from force simulation
                   r={getRadiusBasedOnInfluence(event["Overall influence"])}
-                  fill={hoveredEvent === null || event.name === hoveredEvent.name ? 'darkblue' : 'darkblue'} //#b7c9e2
+                  fill={hoveredEvent === null || event.person_name === hoveredEvent.person_name ? 'darkblue' : 'darkblue'} //#b7c9e2
                   opacity={1}
                   onMouseOver={() => {
                     // only show tooltip if no event is selected or if the hovered event is the same as the selected event
-                    if(selectedEvent === null || selectedEvent.name === event.name) {
+                    if(selectedEvent === null || selectedEvent.person_name === event.person_name) {
                       setHoveredEvent(event);
                     }
                   }}
@@ -216,7 +218,7 @@ function BubbleChart() {
                     setHoveredEvent(null);
                   }}
                   className='bubble-main'
-                  data-event-id={event.event_id}
+                  data-event-id={event.fk_origin_article_id} // Add data attribute to identify the event
                   // onClick={() => {}} --> on click event is handled on the SVG element
                 >
                 </circle>

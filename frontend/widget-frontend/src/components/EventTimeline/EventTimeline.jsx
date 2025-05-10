@@ -16,7 +16,7 @@ function EventTimeline({ width }) {
       fetchEvents();
   }, []);
     
-  console.log("generalEvents", generalEvents);
+
   
 
   const sortedEvents = generalEvents.sort(

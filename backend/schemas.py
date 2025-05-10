@@ -32,6 +32,7 @@ class OpinionSchema(BaseModel):
     relevancy_score: Optional[float]
     citation: Optional[str]
     created_at: Optional[datetime]
+    is_selected: Optional[int]
     class Config:
         orm_mode = True
 

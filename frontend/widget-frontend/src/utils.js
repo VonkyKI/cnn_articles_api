@@ -22,34 +22,36 @@ export const formatDate = d3.timeFormat("%Y-%m-%d");
 const opacityDimmed = 0.1;
 // Function to calculate the opacity of the lines based on the hovered event and selected event and filter state
 export const getOpacityLines = (event, hoveredEvent, selectedEvent, filter) => {
+  console.log(filter);
+  
   if(hoveredEvent === null && selectedEvent === null && filter === null) {
     return opacityDimmed;
   }
   if(hoveredEvent !== null && selectedEvent === null && filter === null) {
-    if(event.name === hoveredEvent.name) {
+    if(event.person_name === hoveredEvent.person_name) {
       return 1;
     }else{
       return opacityDimmed;
     }
   }
   if(hoveredEvent === null && selectedEvent !== null && filter === null) {
-    if(event.name === selectedEvent.name) {
+    if(event.person_name === selectedEvent.person_name) {
       return 1;
     }else{
       return opacityDimmed;
     }
   }
   if(hoveredEvent !== null && selectedEvent !== null && filter === null) {
-    if(event.name === selectedEvent.name) {
+    if(event.person_name === selectedEvent.person_name) {
       return 1;
-    }else if(event.name === hoveredEvent.name) {
+    }else if(event.person_name === hoveredEvent.person_name) {
       return opacityDimmed;
     }else{
       return opacityDimmed;
     }
   }
   if(filter !== null) {
-    if(event.name === filter) {
+    if(event.person_name === filter) {
       return 1;
     }else{
       return opacityDimmed;
@@ -60,27 +62,29 @@ export const getOpacityLines = (event, hoveredEvent, selectedEvent, filter) => {
 
 // Function to calculate the opacity of the bubbles based on the hovered event and selected event and filter state
 export const getOpacityBubbles = (event, hoveredEvent, selectedEvent, filter) => {
+  console.log(filter);
+  
   if(hoveredEvent === null && selectedEvent === null && filter === null) {
     return 1;
   }
   if(hoveredEvent !== null && selectedEvent === null && filter === null) {
-    if(event.name === hoveredEvent.name) {
+    if(event.person_name === hoveredEvent.person_name) {
       return 1;
     }else{
       return opacityDimmed;
     }
   }
   if(hoveredEvent === null && selectedEvent !== null && filter === null) {
-    if(event.name === selectedEvent.name) {
+    if(event.person_name === selectedEvent.person_name) {
       return 1;
     }else{
       return opacityDimmed;
     }
   }
   if(hoveredEvent !== null && selectedEvent !== null && filter === null) {
-    if(event.name === selectedEvent.name) {
+    if(event.person_name === selectedEvent.person_name) {
       return 1;
-    }else if(event.name === hoveredEvent.name) {
+    }else if(event.person_name === hoveredEvent.person_name) {
       return opacityDimmed;
     }else{
       return opacityDimmed;
@@ -88,7 +92,7 @@ export const getOpacityBubbles = (event, hoveredEvent, selectedEvent, filter) =>
   }
 
   if(filter !== null) {
-    if(event.name === filter) {
+    if(event.person_name === filter) {
       return 1;
     }else{
       return opacityDimmed;

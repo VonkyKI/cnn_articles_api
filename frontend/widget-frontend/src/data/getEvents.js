@@ -32,7 +32,7 @@ export const getEvents = async () => {
       };
     }).slice(0, 10); // Обмежуємо до 10 подій
 
-    
+
 
     return eventsWithArticles;
   } catch (error) {

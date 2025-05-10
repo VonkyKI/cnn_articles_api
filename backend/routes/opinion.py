@@ -13,6 +13,7 @@ def get_opinions(
     topic_id: Optional[int] = Query(None, description="Filter by topic id"),
     person_id: Optional[int] = Query(None, description="Filter by person id"),
     relevancy_score: Optional[int] = Query(None, description="Filter by relevancy score"),
+    is_selected: Optional[int] = Query(None, description="Filter by is_selected"),
 ):
     query = db.query(DimOpinion)
     
@@ -27,5 +28,9 @@ def get_opinions(
     if relevancy_score is not None:
         # Припускаємо, що в таблиці DimOpinion є поле, яке містить person_id
         query = query.filter(DimOpinion.relevancy_score >= relevancy_score)
+
+    if is_selected is not None:
+        # Припускаємо, що в таблиці DimOpinion є поле, яке містить person_id
+        query = query.filter(DimOpinion.is_selected == is_selected)
 
     return query.all()
