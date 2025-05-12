@@ -36,13 +36,14 @@ const Persona = ({ onFilterChange, innerWidth, filter }) => {
       
       const eventDate = new Date(event.article_date);
       // If this name isn't in acc or if this event is earlier than the current one, add/update the record
-      if (!acc[event.person_name] || eventDate < acc[event.person_name].date) {
+      if (!acc[event.person_name]) {
+        
         acc[event.person_name] = {
           date: eventDate,
           political_party: event["political_party"], // Default to "Independent" if not specified, other options could be "Republican" and "Democratic"
-          consistency: event["inconsistencies"] === true ? "inconsistent" : "trusted",
+          consistency: event["inconsistency_flag"] == 1 ? "inconsistent" : "trusted",
           stance: event["stance"] || "for", // Assume initial stance, updated later
-          summary: event.summary
+          summary: event.person_summary
         };
       } else {
         // Update the stance to the latest occurrence if there's a newer stance
@@ -51,12 +52,15 @@ const Persona = ({ onFilterChange, innerWidth, filter }) => {
         acc[event.person_name].stance = event["stance"] || acc[event.person_name].stance;
         
         // Check for any inconsistencies, if found set consistency to "Inconsistent"
-        if (event["inconsistencies"] === true) {
+        if (event["inconsistency_flag"] == 1) {
           acc[event.person_name].consistency = "inconsistent";
         }
       }
       return acc;
     }, {});
+
+    console.log("Name to details mapping:", nameToDetails);
+    
 
     // Sort names by earliest date
     const sortedNames = Object.keys(nameToDetails).sort(
@@ -73,6 +77,8 @@ const Persona = ({ onFilterChange, innerWidth, filter }) => {
       summary: nameToDetails[name].summary
     })));
   }, [events]);
+
+  
 
   
 
@@ -100,14 +106,7 @@ const Persona = ({ onFilterChange, innerWidth, filter }) => {
   return (
     <div className="persona-grid" style={{ width: `${innerWidth}px` }}>
       {widgets.map((widget, index) => {
-        let partyIconPath = null;
-        try {
-          partyIconPath = require(`./icons/${widget.political_party}.png`);
-        } catch (e) {
-          partyIconPath = null; // Set to null if not found
-        }
-        
-        
+        const partyIconPath = icons[`./icons/${widget.political_party}.png`]?.default || null;
         const consistencyIconPath = icons[`./icons/${widget.consistency}.png`]?.default || null;
         const imagePath = images[`./img/${widget.name}.png`]?.default || images[`./img/default.png`]?.default;
 

@@ -31,6 +31,7 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
     
     // loop over each event in the group
     sortedGroup.forEach((event, i) => {
+      
       const path = d3.path(); // Create a new path object for each connection
 
       if (i > 0) {
@@ -51,30 +52,37 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
         if (
           chartData.some(
             (e) =>
-              (e.fk_origin_article_id === event.fk_origin_article_id &&
-                e.inconsistency_id === prevEvent.fk_origin_article_id) ||
-              (e.fk_origin_article_id === prevEvent.fk_origin_article_id &&
-                e.inconsistency_id === event.fk_origin_article_id)
+              (e.fk_person_id === event.fk_person_id &&
+                e.inconsistency_with_id === event.opinion_id) ||
+              (e.fk_person_id === prevEvent.fk_person_id &&
+                e.inconsistency_with_id === prevEvent.opinion_id)
           )
         ) {
           hasDashedLine = true;
+          
         }
 
         // calculate the opacity of the line based on the hovered event and selected event
         const opacityLine = getOpacityLines(event, hoveredEvent, selectedEvent, filter);
         
-
-        lineConnectionArray.push({ path, hasDashedLine, name: event.name, opacityLine });
+        
+        
+        
+        lineConnectionArray.push({ path, hasDashedLine, name: event.person_name, opacityLine });
       }
     });
   });
 
   // calculations for the dashed lines connecting the bubbles
+
+  
   const dashedPositions = chartData.map((event) => {
-    if (event.inconsistencies && event.inconsistency_id) {
+    
+    if (event.inconsistency_flag === 1 && event.inconsistency_with_id) {
       const targetEvent = chartData.find(
-        (e) => e.event_id === event.inconsistency_id
+        (e) => e.opinion_id === event.inconsistency_with_id
       );
+
 
       if (targetEvent) {
         const path = d3.path();
@@ -93,6 +101,7 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
         );
 
         // Check if the current dashed line should be animated and highlighted
+
         const isHighlighted =
           hoveredEvent && hoveredEvent.event_id === event.event_id;
         const isTargetHighlighted =
@@ -104,7 +113,7 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
         
         const opacityLine = getOpacityLines(event, hoveredEvent, selectedEvent, filter);
 
-        return { path, className, name: event.name, opacityLine };
+        return { path, className, name: event.person_name, opacityLine };
       }
       return null;
     }

@@ -18,6 +18,8 @@ function BubbleChart() {
   const [chartData, setChartData] = useState([]);
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [hoveredEvent, setHoveredEvent] = useState(null);
+  const [lastHoveredEvent, setLastHoveredEvent] = useState(null);
+  const [isTooltipHovered, setIsTooltipHovered] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null); // State to track the selected event
   const [filter, setFilter] = useState(null); // State to track the selected filter
 
@@ -59,7 +61,6 @@ function BubbleChart() {
   
   // Function to prepare force simulation for clustering bubbles
   const createForceSimulation = (nodes, xScale, getRadiusBasedOnInfluence) => {
-    console.log("nodes", nodes);
     
     const simulation = d3.forceSimulation(nodes)
       .force("x", d3.forceX(d => xScale(d.dateIndex)).strength(0.8))
@@ -166,6 +167,16 @@ function BubbleChart() {
               setFilter(event.person_name); // clear the filter or set it to the persona name setFilter(event.name)
             }
           }}
+          onMouseOut={(ev) => {
+            setHoveredEvent(null); 
+
+          }}
+          onMouseOver={(ev) => {
+            // if mouse is over the SVG, set the last hovered event to null
+            if(!ev.target.classList.contains('bubble-main')) {
+              setLastHoveredEvent(null); 
+            }
+          }}
         >
           <YAxis innerHeight={innerHeight} innerWidth={innerWidth} margin={margin} />
           <g transform={`translate(${margin.left}, ${margin.top})`}>
@@ -221,12 +232,18 @@ function BubbleChart() {
                   opacity={1}
                   onMouseOver={() => {
                     // only show tooltip if no event is selected or if the hovered event is the same as the selected event
-                    if(selectedEvent === null || selectedEvent.person_name === event.person_name) {
-                      setHoveredEvent(event);
-                    }
+                    // if(selectedEvent === null || selectedEvent.person_name === event.person_name) {
+                    //    // Store the last hovered event
+                    // }
+                    setHoveredEvent(event);
+                    setLastHoveredEvent(event);
                   }}
                   onMouseOut={() => {
                     setHoveredEvent(null);
+                    // if (!isTooltipHovered) {
+                    //   setLastHoveredEvent(null); // Hide tooltip when mouse leaves
+                    // }
+                    
                   }}
                   
                   className='bubble-main'
@@ -250,8 +267,16 @@ function BubbleChart() {
           </g>
         </svg>
         {/* Render tooltip when hovered or when a filter is applied */}
-        {hoveredEvent ? (
-          <Tooltip hoveredEvent={hoveredEvent} margin={margin} />
+        {hoveredEvent || lastHoveredEvent ? (
+          <Tooltip
+          hoveredEvent={lastHoveredEvent}
+          margin={margin}
+          onMouseEnter={() => setIsTooltipHovered(true)} // Keep tooltip visible
+          onMouseLeave={() => {
+              setLastHoveredEvent(null); // Дозволяємо приховати тултіп
+              setIsTooltipHovered(false); // Сховати тултіп при наведенні на нього
+          }}
+        />
         ) : null}
       </div>
 

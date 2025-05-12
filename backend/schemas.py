@@ -46,6 +46,9 @@ class EventSchema(BaseModel):
     event_title: Optional[str]
     relevance_score: Optional[int]
     description: Optional[str]
+    relevance_score: Optional[float]
+    event_hotness: Optional[float]
+    is_selected: Optional[int]
     class Config:
         orm_mode = True
 

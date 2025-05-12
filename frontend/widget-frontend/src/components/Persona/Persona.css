@@ -6,6 +6,7 @@
     justify-content: space-around;
     width: 100%; /* Allow width to be controlled from the component's inline style */
     margin-left: 70px;
+    margin-bottom: 30px;
     overflow-y: auto;
   }
   
@@ -20,7 +21,6 @@
     flex-direction: column;
     align-items: flex-start;
     height: 130px; /* Fixed height */
-
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     padding: 10px;
@@ -76,7 +76,7 @@
   /* Expanded widget styling */
   .widget.expanded {
     flex: none;
-    max-width: none;
+    max-width: 450px;
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.5); /* Extra shadow for expanded */
     border: 1px solid #007bff; /* Border for selected */
   }

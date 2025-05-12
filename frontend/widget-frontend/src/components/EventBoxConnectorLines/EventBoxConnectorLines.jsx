@@ -72,7 +72,6 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap, innerWidth,
         
         startPos = { x: xDatePos, y: innerHeight + 30 };
         endPos = { x: xBoxPos, y: innerHeight + 100 };
-        console.log(event.title, endPos);
         
       } else {
         return null;p.lineTo(endPos.x, startPos.y + 50 + randomOffset);
@@ -85,7 +84,6 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap, innerWidth,
     p.lineTo(endPos.x, startPos.y + 10 - randomOffset);
     p.lineTo(endPos.x, endPos.y);
 
-    console.log(selectedEventIndex);
     
 
     return {

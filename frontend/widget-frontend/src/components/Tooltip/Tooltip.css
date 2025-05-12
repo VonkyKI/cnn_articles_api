@@ -6,7 +6,7 @@
     padding: 8px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    pointer-events: none;
+    pointer-events: auto;
     font-size: 10px;
     min-width: 100px;
     max-width: 200px;

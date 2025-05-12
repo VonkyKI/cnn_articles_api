@@ -3,7 +3,6 @@ import * as d3 from 'd3'; // Import D3 library
 // Function to calculate the radius size based on "Overall influence"
 export const getRadiusBasedOnInfluence = (influence) => {
   
-    console.log(influence);
     
 
     if (influence >= 0.7) {
@@ -22,7 +21,7 @@ export const getRadiusBasedOnInfluence = (influence) => {
 export const formatDate = d3.timeFormat("%Y-%m-%d");
 
 
-const opacityDimmed = 0.1;
+const opacityDimmed = 0.2;
 // Function to calculate the opacity of the lines based on the hovered event and selected event and filter state
 export const getOpacityLines = (event, hoveredEvent, selectedEvent, filter) => {
 

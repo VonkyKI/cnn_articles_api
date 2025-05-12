@@ -2,9 +2,7 @@ import React from "react";
 import { getRadiusBasedOnInfluence } from "../../utils";
 import './Tooltip.css'; 
 
-function Tooltip({ hoveredEvent, margin}) {
-  console.log(hoveredEvent);
-  
+function Tooltip({ hoveredEvent, margin, onMouseEnter, onMouseLeave }) {
   return (
     <div
       className="Tooltip"
@@ -20,6 +18,8 @@ function Tooltip({ hoveredEvent, margin}) {
           getRadiusBasedOnInfluence(hoveredEvent["Overall influence"]) / 2 
         }px`,
       }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <b style={{ fontSize: '1.5em' }}>{hoveredEvent.person_name}</b>
       <br />
