@@ -10,9 +10,9 @@ router = APIRouter()
 
 @router.get("/", response_model=List[EventSchema])
 def get_opinions(db: Session = Depends(get_db),
-    relevance_score: Optional[int] = Query(None, description="Filter by relevancy score"),
-    event_hotness: Optional[int] = Query(None, description="Filter by event hotness"),
-    is_selected: Optional[int] = Query(None, description="Filter by is_selected"),
+    relevance_score: Optional[float] = Query(None, description="Filter by relevancy score"),
+    event_hotness: Optional[float] = Query(None, description="Filter by event hotness"),
+    is_selected: Optional[float] = Query(None, description="Filter by is_selected"),
 ):
     query = db.query(dimEvents)
 
