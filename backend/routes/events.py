@@ -30,4 +30,4 @@ def get_opinions(db: Session = Depends(get_db),
         query = query.filter(dimEvents.is_selected == is_selected)
 
 
-    return query().all()
+    return query.all()
