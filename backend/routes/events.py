@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.models import dimEvents
 from backend.schemas import EventSchema
-from typing import List
+from typing import List, Optional
 
 router = APIRouter()
 

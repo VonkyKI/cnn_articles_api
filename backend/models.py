@@ -42,7 +42,7 @@ class DimOpinion(Base):
     citation = Column(Text)
     sentiment_score = Column(Float)
     inconsistency_flag = Column(Boolean)
-    inconsistency_with_id = Column(Integer)
+    inconsistency_with_id = Column(String)
     inconsistency_comment = Column(Text)
     relevancy_score = Column(Float)
     controversy_score = Column(Float)
