@@ -5,14 +5,14 @@ export const getRadiusBasedOnInfluence = (influence) => {
   
     
 
-    if (influence >= 0.7) {
+    if (influence >= 0.8) {
       return 25;
-    } else if (influence >= 0.4) {
+    } else if (influence >= 0.7) {
       return 15;
     } else if (influence >= 0) {
       return 8;
     } else {
-      return 15;
+      return 10;
     }
 };
 

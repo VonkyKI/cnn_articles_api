@@ -25,12 +25,20 @@ function Tooltip({ hoveredEvent, margin, onMouseEnter, onMouseLeave }) {
       <br />
       <strong>Date:</strong> {hoveredEvent.article_date}
       <br />
+      <strong>Inconsisnecy:</strong> {hoveredEvent.inconsistency_flag}
+      <br />
       <strong>Sentiment:</strong> {hoveredEvent.sentiment_score}
       <br />
       <strong>Influence:</strong> {hoveredEvent["Overall influence"]}
       <br />
       <strong>Citation:</strong> {hoveredEvent.citation}
       <br />
+      {hoveredEvent.inconsistency_flag === 1 && (
+        <div>
+          <strong>Inconsistency:</strong> {hoveredEvent.inconsistency_comment}
+          <br />
+        </div>
+      )}
       <em> {hoveredEvent["text"]}  </em> 
       <a className="EventBox-readmore" href={hoveredEvent.article_url} target="_blank" rel="noopener noreferrer">Read more</a>
     </div>

@@ -11,12 +11,15 @@ export const getEvents = async () => {
     const articles = await articlesResponse.json();
 
     // Крок 2: Отримуємо список подій
-    const eventsResponse = await fetch(`${API_URL}events/`);
+    const eventsResponse = await fetch(`${API_URL}events/?relevance_score=0.8&event_hotness=0.8&is_selected=1`);
     if (!eventsResponse.ok) {
       throw new Error(`Failed to fetch events: ${eventsResponse.statusText}`);
     }
 
     const events = await eventsResponse.json();
+
+
+    
 
     // Крок 3: Зв'язуємо події зі статтями за `article_id` та `fk_article_id`
     const eventsWithArticles = events.map(event => {
@@ -35,8 +38,10 @@ export const getEvents = async () => {
 
     // Фільтруємо статті за датою та обмежуємо до 10
     const filteredEvents = eventsWithArticles
-      .filter(event => new Date(event.date) < new Date('2024-05-16'))
-      .slice(0, 10);
+      // .filter(event => new Date(event.date) < new Date('2024-05-16'))
+      //.slice(0, 10);
+
+    
 
     return filteredEvents;
   } catch (error) {

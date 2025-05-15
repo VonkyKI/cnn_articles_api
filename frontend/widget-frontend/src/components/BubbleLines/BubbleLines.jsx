@@ -52,14 +52,14 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
         if (
           chartData.some(
             (e) =>
+              
               (e.fk_person_id === event.fk_person_id &&
-                e.inconsistency_with_id === event.opinion_id) ||
+                e.inconsistency_with_id?.includes(`${event.opinion_id}`)) ||
               (e.fk_person_id === prevEvent.fk_person_id &&
-                e.inconsistency_with_id === prevEvent.opinion_id)
+                e.inconsistency_with_id?.includes(`${prevEvent.opinion_id}`))
           )
         ) {
           hasDashedLine = true;
-          
         }
 
         // calculate the opacity of the line based on the hovered event and selected event
@@ -76,47 +76,52 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
   // calculations for the dashed lines connecting the bubbles
 
   
-  const dashedPositions = chartData.map((event) => {
-    
+  const dashedPositions = chartData.flatMap((event) => {
     if (event.inconsistency_flag === 1 && event.inconsistency_with_id) {
-      const targetEvent = chartData.find(
-        (e) => e.opinion_id === event.inconsistency_with_id
+      const targetEvents = chartData.filter((e) =>
+        event.inconsistency_with_id.includes(`${e.opinion_id}`)
       );
 
+      // Check if the targetEvents is not empty
+      if (targetEvents.length > 0) {
+        return targetEvents.map((element) => {
+          const path = d3.path();
+          path.moveTo(event.x, event.y);
+          const { cp1x, cp1y, cp2x, cp2y } = getBezierCurveControlPoints(
+            event,
+            element
+          );
+          path.bezierCurveTo(
+            cp1x,
+            cp1y,
+            cp2x,
+            cp2y,
+            element.x,
+            element.y
+          );
 
-      if (targetEvent) {
-        const path = d3.path();
-        path.moveTo(event.x, event.y);
-        const { cp1x, cp1y, cp2x, cp2y } = getBezierCurveControlPoints(
-          event,
-          targetEvent
-        );
-        path.bezierCurveTo(
-          cp1x,
-          cp1y,
-          cp2x,
-          cp2y,
-          targetEvent.x,
-          targetEvent.y
-        );
+          // Check if the current dashed line should be animated and highlighted
+          const isHighlighted =
+            hoveredEvent && hoveredEvent.event_id === event.event_id;
+          const isTargetHighlighted =
+            hoveredEvent && hoveredEvent.event_id === element.event_id;
 
-        // Check if the current dashed line should be animated and highlighted
+          // Add the 'animate' class if the line should be animated
+          const className =
+            isHighlighted || isTargetHighlighted ? "animate" : "remove-animate";
 
-        const isHighlighted =
-          hoveredEvent && hoveredEvent.event_id === event.event_id;
-        const isTargetHighlighted =
-          hoveredEvent && hoveredEvent.event_id === targetEvent.event_id;
+          const opacityLine = getOpacityLines(
+            event,
+            hoveredEvent,
+            selectedEvent,
+            filter
+          );
 
-        // Add the 'animate' class if the line should be animated
-        const className =
-          isHighlighted || isTargetHighlighted ? "animate" : "remove-animate";
-        
-        const opacityLine = getOpacityLines(event, hoveredEvent, selectedEvent, filter);
-
-        return { path, className, name: event.person_name, opacityLine };
+          return { path, className, name: event.person_name, opacityLine };
+        });
       }
-      return null;
     }
+    return [];
   });
 
   return (
@@ -138,6 +143,7 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
       {/* Render dashed lines for inconsistencies */}
       <g className="dashedLineConnection">
         {dashedPositions.map((element, index) => {
+          
           if (!element) return null;
           const { path, className, opacityLine } =
             element;

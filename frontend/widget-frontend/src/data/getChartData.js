@@ -37,7 +37,7 @@ export const getChartData = async () => {
     
 
     return {
-      eventsData: Object.values(merged).flat().slice(1, 50),
+      eventsData: Object.values(merged).flat(), //.slice(1, 50)
     };
   } catch (error) {
     console.error("Error in getChartData:", error);

@@ -68,6 +68,8 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap, innerWidth,
 
         // const xBoxPos = index * (boxWidth + boxGap) + boxWidth / 2;
 
+        
+
         const xBoxPos =  (((innerWidth + 70 + 50) / events.length) * (index)) + boxWidth - boxGap;
         
         startPos = { x: xDatePos, y: innerHeight + 30 };

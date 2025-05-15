@@ -14,9 +14,13 @@ function EventTimeline({ width, onEventBoxClick }) {
     fetchEvents();
   }, []);
 
+  
+
   const sortedEvents = generalEvents.sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );
+
+  
 
   return (
     <div className="EventTimeline" style={{ width: width }}>

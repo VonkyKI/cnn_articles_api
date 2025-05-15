@@ -22,8 +22,8 @@ function BubbleChart() {
   const [isTooltipHovered, setIsTooltipHovered] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null); // State to track the selected event
   const [filter, setFilter] = useState(null); // State to track the selected filter
-
   const[eventsData, setEventsData] = useState([]); // State to store events data
+  const appRef = useRef(null); // Ref for the persona-grid
 
 
   useEffect(() => {
@@ -134,8 +134,27 @@ function BubbleChart() {
   }, [filter, nodes, margin.left]);
   
 
+  useEffect(() => {
+    const appElement = appRef.current;
+    if (appElement) {
+      const handleWheel = (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          appElement.scrollLeft += e.deltaY; // Горизонтальна прокрутка
+        }
+      };
+
+      appElement.addEventListener('wheel', handleWheel);
+
+      return () => {
+        appElement.removeEventListener('wheel', handleWheel);
+      };
+    }
+  }, []);
+
+
   return (
-    <div className="App">
+    <div className="App" ref={appRef} style={{ overflowX: 'auto', overflowY: 'hidden' }}>
         <div className="Persona">
             <h1></h1>
             {<Persona onFilterChange={setFilter} innerWidth={innerWidth} filter={filter}/>}
@@ -195,6 +214,7 @@ function BubbleChart() {
                   opacity={bubbleOpacities[index]}
                 >
                 {/* Pulsing effect if inconsistency is TRUE */}
+                
                 {event.inconsistency_flag === 1 && (
                   <>
                   <circle
@@ -208,7 +228,8 @@ function BubbleChart() {
                   />
                   </>
                 )}
-                {nodes.filter((e) => e.inconsistency_with_id === event.opinion_id).length > 0 && (
+                
+                {nodes.filter((e) => e.inconsistency_with_id?.includes(`${event.opinion_id}`)).length > 0 && (
                 <>
                 {<circle
                   className="pulsing"

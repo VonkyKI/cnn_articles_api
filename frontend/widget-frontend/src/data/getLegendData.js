@@ -36,6 +36,7 @@ export const getLegendData = async () => {
           ? new Date(article.article_date).toISOString().split("T")[0]
           : "Unknown",
         person_summary: attitude?.person_summary || "No summary available",
+        stance: attitude?.stance || "Unknown",
       };
     });
 
@@ -51,7 +52,7 @@ export const getLegendData = async () => {
 
 
     
-    return {events: Object.values(groupedByPerson).flat().slice(1, 50)}; // Повертаємо згруповані дані
+    return {events: Object.values(groupedByPerson).flat()}; // Повертаємо згруповані дані.slice(1, 50)
   } catch (error) {
     console.error("Error in getLegendData:", error);
     return {}; // Повертаємо порожній об'єкт у разі помилки
