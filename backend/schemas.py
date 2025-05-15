@@ -36,6 +36,7 @@ class OpinionSchema(BaseModel):
     inconsistency_flag: Optional[int]
     inconsistency_with_id: Optional[str]
     opinion_hotness: Optional[float]
+    inconsistency_comment: Optional[str]
     class Config:
         orm_mode = True
 
