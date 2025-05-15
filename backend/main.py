@@ -9,7 +9,7 @@ app = FastAPI()
 # Дозволяє доступ з усіх доменів (можна обмежити список за потреби)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://inconsistency-widget.netlify.app"],  # Можна вказати конкретні домени, наприклад ["https://your-frontend-domain.com"]
+    allow_origins=["*"],  # Можна вказати конкретні домени, наприклад ["https://your-frontend-domain.com"]
     allow_credentials=True,
     allow_methods=["*"],  # Дозволяються всі HTTP-методи
     allow_headers=["*"],  # Дозволяються всі заголовки
