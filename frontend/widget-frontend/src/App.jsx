@@ -149,7 +149,7 @@ function BubbleChart() {
   useEffect(() => {
 
 
-    if (filter && svgRef.current) {
+    if (filter && appRef.current) {
       const selectedBubble = nodes.find(event => event.name === filter);
       if (selectedBubble) {
         // Calculate bubble position within the SVG

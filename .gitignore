@@ -4,3 +4,5 @@ __pycache__/
 .venv/
 .env/
 *.sqlite3
+frontend/widget-frontend/package-lock.json
+frontend/widget-frontend/package.json

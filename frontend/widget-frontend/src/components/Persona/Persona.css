@@ -93,6 +93,7 @@
     display: flex;
     width: 100%;
     align-items: flex-start;
+    overflow-y: auto;
   }
   
   .widget.expanded .widget-content {
