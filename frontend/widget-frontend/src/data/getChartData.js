@@ -1,4 +1,4 @@
-export const getChartData = async () => {
+export  async function getChartData(topic=1){
   
   const API_URL = import.meta.env.VITE_APP_API_URL;
   
@@ -20,9 +20,16 @@ export const getChartData = async () => {
       articlesRes.json()
     ]);
 
+
+    console.log(topic);
+    
+    
     const merged = opinions.map(opinion => {
       const person = persons.find(p => p.person_id === opinion.fk_person_id);
-      const article = articles.find(a => a.article_id === opinion.fk_origin_article_id);
+      const article = articles.find(a => a.article_id === opinion.fk_origin_article_id
+        && a.fk_topic_id == topic // Фільтруємо за темою, якщо вона задана
+      );
+      
       return {
         ...opinion,
         person_name: person?.person_name || "Unknown",
@@ -34,6 +41,7 @@ export const getChartData = async () => {
           : "Unknown",
       };
     });
+    
     
 
     return {
