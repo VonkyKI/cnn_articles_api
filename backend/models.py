@@ -73,4 +73,3 @@ class FctAttitude(Base):
     sentiment_deviation = Column(Float)
     stance = Column(String(30))
     person_summary = Column(String(300))
-    is_expert_flag = Column(Boolean)

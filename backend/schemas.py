@@ -61,8 +61,6 @@ class FctAttitudeSchema(BaseModel):
     sentiment_deviation: Optional[float]
     stance: Optional[str]
     person_summary: Optional[str]
-    is_expert_flag: Optional[bool]
-
     class Config:
         orm_mode = True
 
