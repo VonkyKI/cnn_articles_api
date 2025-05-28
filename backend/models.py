@@ -8,11 +8,7 @@ class DimPerson(Base):
     person_id = Column(Integer, primary_key=True)
     person_name = Column(String(255))
     image_url = Column(String(255))
-    political_party = Column(String(255))
-    attribute_1 = Column(String(255))
-    attribute_2 = Column(String(255))
-    attribute_3 = Column(String(255))
-    attribute_4 = Column(String(255))
+
 
 class DimTopic(Base):
     __tablename__ = "dimTopic"
