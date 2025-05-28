@@ -5,7 +5,7 @@ from datetime import datetime
 class PersonSchema(BaseModel):
     person_id: int
     person_name: str
-    political_party: Optional[str]
+    image_url: Optional[HttpUrl] = None
     class Config:
         orm_mode = True
 
