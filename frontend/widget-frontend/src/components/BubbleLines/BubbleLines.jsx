@@ -54,12 +54,13 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
             (e) =>
               
               (e.fk_person_id === event.fk_person_id &&
-                e.inconsistency_with_id?.includes(`${event.opinion_id}`)) ||
+                e.inconsistency_with_id?.replace(/[\[\]]/g, '').split(',').includes(`${event.opinion_id}`)) ||
               (e.fk_person_id === prevEvent.fk_person_id &&
-                e.inconsistency_with_id?.includes(`${prevEvent.opinion_id}`))
+                e.inconsistency_with_id?.replace(/[\[\]]/g, '').split(',').includes(`${prevEvent.opinion_id}`))
           )
         ) {
           hasDashedLine = true;
+          
         }
 
         // calculate the opacity of the line based on the hovered event and selected event
@@ -78,9 +79,11 @@ function BubbleLines({ chartData, hoveredEvent, selectedEvent, filter }) {
   
   const dashedPositions = chartData.flatMap((event) => {
     if (event.inconsistency_flag === 1 && event.inconsistency_with_id) {
+      
       const targetEvents = chartData.filter((e) =>
-        event.inconsistency_with_id.includes(`${e.opinion_id}`)
+        event.inconsistency_with_id.replace(/[\[\]]/g, '').split(',').includes(`${e.opinion_id}`)
       );
+
 
       // Check if the targetEvents is not empty
       if (targetEvents.length > 0) {

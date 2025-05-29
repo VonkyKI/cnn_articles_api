@@ -20,8 +20,6 @@ export  async function getChartData(topic=1){
       articlesRes.json()
     ]);
 
-
-    console.log(topic);
     
     
     const merged = opinions.map(opinion => {
@@ -36,6 +34,7 @@ export  async function getChartData(topic=1){
         political_party: person?.political_party || "Unknown",
         article_title: article?.title || "Unknown",
         article_url: article?.url || "#",
+        topic_id: article?.fk_topic_id || "Unknown",
         article_date: article?.article_date && !isNaN(new Date(article.article_date).getTime())
           ? new Date(article.article_date).toISOString().split("T")[0]
           : "Unknown",
@@ -43,9 +42,9 @@ export  async function getChartData(topic=1){
     });
     
     
-
+    
     return {
-      eventsData: Object.values(merged).flat(), //.slice(1, 50)
+      eventsData: Object.values(merged.filter(item => item.topic_id == topic && item.person_name != 'Unspecified')).flat(), //.slice(1, 50)
     };
   } catch (error) {
     console.error("Error in getChartData:", error);

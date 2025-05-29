@@ -1,7 +1,8 @@
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
 // src/data/getChartData.js
-export const getLegendData = async () => {
+export async function getLegendData(topic_id=1) {
+
   try {
     const [opinionsRes, personsRes, articlesRes, attitudeRes] = await Promise.all([
       fetch(`${API_URL}opinions/?is_selected=1`),
@@ -23,7 +24,7 @@ export const getLegendData = async () => {
 
     const merged = opinions.map(opinion => {
       const person = persons.find(p => p.person_id === opinion.fk_person_id);
-      const article = articles.find(a => a.article_id === opinion.fk_origin_article_id);
+      const article = articles.find(a => a.article_id === opinion.fk_origin_article_id); // Фільтруємо за темою, якщо вона задана
       const attitude = attitudes.find(a => a.fk_person_id === opinion.fk_person_id);
       
       return {
@@ -35,10 +36,11 @@ export const getLegendData = async () => {
         article_date: article?.article_date && !isNaN(new Date(article.article_date).getTime())
           ? new Date(article.article_date).toISOString().split("T")[0]
           : "Unknown",
+        topic_id: article?.fk_topic_id || "Unknown",
         person_summary: attitude?.person_summary || "No summary available",
         stance: attitude?.stance || "Unknown",
       };
-    });
+    }).filter(item => item.topic_id == topic_id && item.person_name != 'Unspecified');
 
     // Групування даних по персоні
     const groupedByPerson = merged.reduce((acc, item) => {
@@ -49,6 +51,9 @@ export const getLegendData = async () => {
       acc[personName].push(item);
       return acc;
     }, {});
+
+    console.log("groupedByPerson length:", Object.keys(groupedByPerson).length);
+    
 
 
     

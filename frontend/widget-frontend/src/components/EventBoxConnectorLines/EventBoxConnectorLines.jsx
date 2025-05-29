@@ -2,18 +2,21 @@ import React, { useRef, useEffect, useState } from "react";
 import { getEvents } from '../../data/getEvents';
 import * as d3 from "d3";
 
-function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap, innerWidth, selectedEventIndex }) {
+function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap, innerWidth, selectedEventIndex, topic_id }) {
+
+  
+
   const [events, setEvents] = useState([]);
   const randomOffsetsRef = useRef([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const events = await getEvents();
+      const events = await getEvents(topic_id);
       setEvents(events);
     };
 
     fetchEvents();
-  }, []);
+  }, [topic_id]);
 
   useEffect(() => {
     if (randomOffsetsRef.current.length === 0 && events.length > 0) {
@@ -58,6 +61,8 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap, innerWidth,
     } else {
       const [smallerDate, largerDate] = getClosestDates(event.date);
       if (smallerDate && largerDate) {
+
+        
         const smallerIndex = dateIndexMap[smallerDate.toISOString().split('T')[0]];
         const largerIndex = dateIndexMap[largerDate.toISOString().split('T')[0]];
 
@@ -71,7 +76,7 @@ function EventBoxConnectorLines({ xScale, innerHeight, dateIndexMap, innerWidth,
 
         
 
-        const xBoxPos =  (((innerWidth + 70 + 50) / events.length) * (index)) + boxWidth - boxGap;
+        const xBoxPos =  (((innerWidth + 70 + 50) / events.length) * (index)) + boxWidth - boxGap - 30;
         
         startPos = { x: xDatePos, y: innerHeight + 30 };
         endPos = { x: xBoxPos, y: innerHeight + 100 };

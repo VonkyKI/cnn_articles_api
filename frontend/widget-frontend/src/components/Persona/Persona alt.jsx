@@ -5,7 +5,7 @@ import { sort } from 'd3';
 const icons = import.meta.glob('./icons/*.png', { eager: true });
 const images = import.meta.glob('./img/*.png', { eager: true });
 
-const Persona = ({ onFilterChange, innerWidth, filter }) => {
+const Persona = ({ onFilterChange, innerWidth, filter, topic_id }) => {
   const [widgets, setWidgets] = useState([]);
   const [selectedWidget, setSelectedWidget] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const Persona = ({ onFilterChange, innerWidth, filter }) => {
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
-      const data = await getLegendData();
+      const data = await getLegendData(topic_id);
       if (data && data.events) {
         setEvents(data.events);
       } else {
@@ -24,7 +24,7 @@ const Persona = ({ onFilterChange, innerWidth, filter }) => {
       setLoading(false);
     };
     fetchEvents();
-  }, []);
+  }, [topic_id]);
 
   useEffect(() => {
     // Create a map for each person's earliest date and party

@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react';
 import "./EventTimeline.css";
 import { getEvents } from '../../data/getEvents';
 
-function EventTimeline({ width, onEventBoxClick }) {
+function EventTimeline({ width, onEventBoxClick, topic_id }) {
   const [generalEvents, setEventsData] = useState([]); // State to store events data
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const generalEvents = await getEvents();
+      const generalEvents = await getEvents(topic_id);
       setEventsData(generalEvents);
     };
 
     fetchEvents();
-  }, []);
+  }, [topic_id]);
 
   
 
+  
   const sortedEvents = generalEvents.sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );

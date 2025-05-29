@@ -19,12 +19,12 @@ function BubbleLegend() {
         <div className="legend-bubble-sizes">
           <span>Influence Level:</span>
           {/* Small Bubble */}
-          <div className="legend-bubble-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', height: `${getRadiusBasedOnInfluence("high") * 2-(getRadiusBasedOnInfluence("medium") - getRadiusBasedOnInfluence("low"))}px` }}>
+          <div className="legend-bubble-row" style={{ display: 'flex', alignItems: 'center', gap: '20px', height: `${getRadiusBasedOnInfluence("high") * 2-(getRadiusBasedOnInfluence("medium") - getRadiusBasedOnInfluence("low"))}px` }}>
           <svg width="50" height="50">
               <circle 
                 cx="25"
                 cy="25"
-                r={getRadiusBasedOnInfluence("low")} 
+                r={getRadiusBasedOnInfluence(0.7)} 
                 fill="darkblue" 
                 opacity={1} 
               />
@@ -33,12 +33,12 @@ function BubbleLegend() {
           </div>
 
           {/* Medium Bubble */}
-          <div className="legend-bubble-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', height: `${getRadiusBasedOnInfluence("high") * 2}px` }}>
+          <div className="legend-bubble-row" style={{ display: 'flex', alignItems: 'center', gap: '20px', height: `${getRadiusBasedOnInfluence("high") * 2}px` }}>
           <svg width="50" height="50">
               <circle 
                 cx="25"
                 cy="25"
-                r={getRadiusBasedOnInfluence("medium")} 
+                r={getRadiusBasedOnInfluence(0.8)} 
                 fill="darkblue" 
                 opacity={1} 
               />
@@ -47,12 +47,12 @@ function BubbleLegend() {
           </div>
 
           {/* Large Bubble */}
-          <div className="legend-bubble-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: `${getRadiusBasedOnInfluence("high") - getRadiusBasedOnInfluence("medium")}px`, height: `${getRadiusBasedOnInfluence("high") * 2}px` }}>
+          <div className="legend-bubble-row" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginTop: `${getRadiusBasedOnInfluence("high") - getRadiusBasedOnInfluence("medium")}px`, height: `${getRadiusBasedOnInfluence("high") * 2}px` }}>
           <svg width="50" height="50">
               <circle 
                 cx="25"
                 cy="25"
-                r={getRadiusBasedOnInfluence("high")} 
+                r={getRadiusBasedOnInfluence(0.91)} 
                 fill="darkblue" 
                 opacity={1} 
               />

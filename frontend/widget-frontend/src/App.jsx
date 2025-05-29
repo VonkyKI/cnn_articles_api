@@ -59,6 +59,8 @@ function BubbleChart() {
 
   useEffect(() => {
 
+
+    
     const dates = [...new Set(eventsData.map(d => d.article_date))];
 
     setUniqueDates(dates);
@@ -69,8 +71,6 @@ function BubbleChart() {
     const innerHeight = height - margin.top - margin.bottom;
     setInnerHeight(innerHeight);
 
-
-    console.log(innerHeight);
 
 
     setSvgRef(null);
@@ -104,6 +104,7 @@ function BubbleChart() {
       acc[date] = i;
       return acc;
     }, {});
+
 
     setDateIndexMap(dateIndexMap);
 
@@ -189,7 +190,7 @@ function BubbleChart() {
     <div className="App" ref={appRef} style={{ overflowX: 'auto', overflowY: 'hidden' }}>
       <div className="Persona">
         <h1></h1>
-        {<Persona onFilterChange={setFilter} innerWidth={innerWidth} filter={filter} />}
+        {<Persona onFilterChange={setFilter} innerWidth={innerWidth} filter={filter} topic_id={selectedTopic} />}
       </div>
       <div className="Legend">
         <Legend />
@@ -326,6 +327,7 @@ function BubbleChart() {
               dateIndexMap={dateIndexMap}
               innerWidth={innerWidth}
               selectedEventIndex={selectedEventIndex} // Передаємо вибраний індекс
+              topic_id={selectedTopic} // Передаємо topic_id для фільтрації
             />
           </g>
         </svg>
@@ -353,6 +355,7 @@ function BubbleChart() {
             setSelectedEventIndex(index);
           }
         }} // Оновлюємо вибраний індекс
+        topic_id={selectedTopic} // Передаємо topic_id для фільтрації
       />
     </div>
   );
