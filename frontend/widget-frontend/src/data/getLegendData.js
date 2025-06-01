@@ -39,6 +39,8 @@ export async function getLegendData(topic_id=1) {
         topic_id: article?.fk_topic_id || "Unknown",
         person_summary: attitude?.person_summary || "No summary available",
         stance: attitude?.stance || "Unknown",
+        // Include image_url from the person data
+        image_url: person?.image_url || null,
       };
     }).filter(item => item.topic_id == topic_id && item.person_name != 'Unspecified');
 

@@ -6,3 +6,5 @@ __pycache__/
 *.sqlite3
 frontend/widget-frontend/package-lock.json
 frontend/widget-frontend/package.json
+start.bat
+.gitignore

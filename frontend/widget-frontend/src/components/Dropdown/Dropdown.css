@@ -1,6 +1,7 @@
 .dropdown {
   position: absolute;
-  margin-left: 70px;
+  margin-left: 100px;
+  margin-top: -20px;
 }
   
 .dropdown label {

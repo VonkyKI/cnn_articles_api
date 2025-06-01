@@ -37,10 +37,16 @@ const Persona = ({ onFilterChange, innerWidth, filter, topic_id }) => {
           consistency: event["inconsistency_flag"] == 1 ? "inconsistent" : "trusted",
           stance: event["stance"] || "for",
           summary: event.person_summary,
+          // Store the image URL from the event data
+          imageUrl: event.image_url || null,
         };
       } else {
         acc[event.person_name].political_party = event["political_party"] || acc[event.person_name].political_party;
         acc[event.person_name].stance = event["stance"] || acc[event.person_name].stance;
+        // Update image URL if available and not previously set
+        if (event.image_url && !acc[event.person_name].imageUrl) {
+          acc[event.person_name].imageUrl = event.image_url;
+        }
         if (event["inconsistency_flag"] == 1) {
           acc[event.person_name].consistency = "inconsistent";
         }
@@ -59,6 +65,7 @@ const Persona = ({ onFilterChange, innerWidth, filter, topic_id }) => {
         consistency: nameToDetails[name].consistency,
         stance: nameToDetails[name].stance,
         summary: nameToDetails[name].summary,
+        imageUrl: nameToDetails[name].imageUrl, // Include the image URL in the widget data
       }))
     );
   }, [events]);
@@ -105,7 +112,9 @@ const Persona = ({ onFilterChange, innerWidth, filter, topic_id }) => {
       {widgets.map((widget, index) => {
         const partyIconPath = icons[`./icons/${widget.political_party}.png`]?.default || null;
         const consistencyIconPath = icons[`./icons/${widget.consistency}.png`]?.default || null;
-        const imagePath = images[`./img/${widget.name}.png`]?.default || images[`./img/default.png`]?.default;
+        // Use image URL from database or a default image as fallback
+        const defaultImageUrl = images[`./img/${widget.name}.png`]?.default || images[`./img/default.png`]?.default; // Placeholder image
+        const imageUrl = widget.imageUrl || defaultImageUrl;
 
         return (
           <div
@@ -115,7 +124,8 @@ const Persona = ({ onFilterChange, innerWidth, filter, topic_id }) => {
           >
             <div className="widget-content">
               <div className="widget-left">
-                <img src={imagePath} alt={widget.name || 'Default'} className="widget-img" />
+                {/* Use the image URL directly */}
+                <img src={imageUrl} alt={widget.name || 'Default'} className="widget-img" />
                 <div className="icon-container">
                   {partyIconPath !== null ? (
                     <img src={partyIconPath} alt={widget.political_party} className="icon-party" />
